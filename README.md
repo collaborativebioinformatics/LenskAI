@@ -4,7 +4,7 @@
 
 # Aim
 
-The aim of the project is to examine how graph neural networks learn and provide valuable insights from a network-type of data. We plan to feed a graph neural network (GNN) with a large biological network (e.g., DisGeNET, protein-protein interaction network). Then change the network architecture and compete both networks agains each other to examine how GNN evolve.
+The aim of the project is to examine how graph neural networks learn and provide valuable insights from a network-type of data. We plan to feed a graph neural network (GNN) with a large biological network (e.g., DisGeNET, PrimeKG, SPOKE, petagraph). Then change the network architecture and compete both networks agains each other to examine how GNN evolve.
 
 # Contributors
 
