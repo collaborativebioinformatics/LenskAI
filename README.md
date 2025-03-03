@@ -12,6 +12,10 @@ Feed a cunsumer-available LLM with a large network (e.g., protein-protein intera
 
 # Introduction
 
+<img width="795" alt="Screenshot 2025-03-03 at 20 47 30" src="https://github.com/user-attachments/assets/19681a5d-355d-4b5f-8d18-508330dc073a" />
+
+<img width="367" alt="Screenshot 2025-03-03 at 20 47 37" src="https://github.com/user-attachments/assets/39e8d1d0-e607-4281-a560-f0ee473e3ab6" />
+
 # Methods
 
 Protein-protein interaction databases: BioGRID, IntAct, Reactome, KEGG
