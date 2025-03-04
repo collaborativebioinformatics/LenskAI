@@ -30,6 +30,7 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.loggers import TensorBoardLogger, WandbLogger
 
 from torch_geometric.data import Data
+import torch_geometric.nn.conv as pygconv
 import torch_geometric.loader
 
 import wandb
@@ -37,6 +38,7 @@ import wandb
 import models_hackathon as models
 from data_utils import read_data, create_data
 import model_utils
+import sys
 
 # +
 base_path = '../data/final_data/'
@@ -65,7 +67,7 @@ os.environ['WANDB_NOTEBOOK_NAME'] = notebook_name
 import gc
 from sklearn import metrics
 
-def run_trials(create_model, start_trial=0, end_trial=100, n_epochs=500, log=False, log_project=None):
+def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=500, log=False, log_project=None):
 
     if log:
         # dt_string = str(datetime.datetime.today()).replace(' ', '_')
@@ -92,8 +94,28 @@ def run_trials(create_model, start_trial=0, end_trial=100, n_epochs=500, log=Fal
 
 
         model = create_model()
-        print('running a model of format:')
+        print('starting a model of format:')
         print(model)
+
+        '''
+        Layer types we want to try
+        conv.GCNConv
+        conv.SAGEConv
+        conv.GATConv
+        conv.TransformerConv
+        conv.HGTConv 
+        '''
+
+        layerTypes = [pygconv.GCNConv, pygconv.SAGEConv, pygconv.GATConv, pygconv.TransformerConv, pygconv.HGTConv]
+
+        if(model_name == 'GraphSAGE'):
+            model.model.convs[0] = layerTypes[2](105, 256)
+            model.model.convs[1] = layerTypes[2](256, 256)
+            model.model.convs[2] = layerTypes[2](256, 256)
+        print('changed to format:')
+        print(model)
+
+
         if log:
             n_zfills = int(np.ceil(np.log10(100)))
             log_name = f'{log_project}_trial{str(trial).zfill(n_zfills)}'
@@ -178,14 +200,13 @@ model_creator_dict = {'SGConv': models.create_SGConv_GNN,
 
 create_model = model_creator_dict[model_name]
 
+trialDetailsString = sys.argv[1]
 
-log_project_name = f'{model_name}'
-
-
+log_project_name = f'{model_name}' + trialDetailsString
 # run multiple trials
-train_reports, test_reports, roc_data = run_trials(lambda: create_model(model_name, num_features, num_classes), start_trial=0, end_trial=0,
+train_reports, test_reports, roc_data = run_trials(lambda: create_model(model_name, num_features, num_classes), model_name, start_trial=0, end_trial=0,
                                          n_epochs=250, log=False, log_project=log_project_name)
 
 # save reports from trials to json
 model_utils.save_reports(f'project_reports/{log_project_name}_reports', train_reports, test_reports)
-np.save(f'project_reports/{model_name}_roc', roc_data)
+np.save(f'project_reports/{log_project_name}_roc', roc_data)
