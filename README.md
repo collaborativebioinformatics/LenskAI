@@ -38,12 +38,11 @@ Extracting disease–gene associations from DisGeNET: https://github.com/dhimmel
 
 run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Gene Disease associations in DisGeNET
 
-
 Protein-gene databases: Human Protein Atlas data
 
 Protein-protein interaction databases: STRING data to get protein provide the edge list and edge list features.
 
-Genomic-disease data: Genomic Data Commons data and processes it provide mutation features.
+Genomic-disease data: Genomic Data Commons data for brain cancer data to provide mutation features.
 
 **PyTorch Geometric** GNN architectures to select from: https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html
 
