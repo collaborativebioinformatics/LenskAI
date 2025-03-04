@@ -67,6 +67,15 @@ os.environ['WANDB_NOTEBOOK_NAME'] = notebook_name
 import gc
 from sklearn import metrics
 
+def updateModel(model):
+    layerTypes = [pygconv.GCNConv, pygconv.SAGEConv, pygconv.GATConv, pygconv.TransformerConv, pygconv.HGTConv]
+
+    if(model_name == 'GraphSAGE'):
+        model.model.convs[0] = layerTypes[0](105, 256)
+        model.model.convs[1] = layerTypes[0](256, 256)
+        model.model.convs[2] = layerTypes[0](256, 256)
+    return model
+
 def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=500, log=False, log_project=None):
 
     if log:
@@ -75,11 +84,16 @@ def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=
             print('Enter the name of the log project: ')
             log_project = input()
 
+
+
     # model info
     model = create_model()
+    model = updateModel(model)
     model_summary = pl.utilities.model_summary.summarize(model, max_depth=4)
     model_summary_str = str(model_summary)
     num_trainable_params = model_summary.trainable_parameters
+    
+
 
     print(model_summary_str)
 
@@ -97,21 +111,8 @@ def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=
         print('starting a model of format:')
         print(model)
 
-        '''
-        Layer types we want to try
-        conv.GCNConv
-        conv.SAGEConv
-        conv.GATConv
-        conv.TransformerConv
-        conv.HGTConv 
-        '''
+        model = updateModel(model)
 
-        layerTypes = [pygconv.GCNConv, pygconv.SAGEConv, pygconv.GATConv, pygconv.TransformerConv, pygconv.HGTConv]
-
-        if(model_name == 'GraphSAGE'):
-            model.model.convs[0] = layerTypes[2](105, 256)
-            model.model.convs[1] = layerTypes[2](256, 256)
-            model.model.convs[2] = layerTypes[2](256, 256)
         print('changed to format:')
         print(model)
 

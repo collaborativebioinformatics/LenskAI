@@ -21,6 +21,8 @@ The aim of the project is to examine a Lenski-Esque experiment of evolving a gra
 
 ![experiment2](Experiment2.png)
 
+![experiment3](Experiment3.png)
+
 Additionally the original paper focused on a single lung cancer dataset.  We will be using an additional brain cancer dataset from DisGenet to broaden the value of the experimental trials.  
 
 
