@@ -36,6 +36,9 @@ Additionally the original paper focused on a single lung cancer dataset.  We wil
 
 # Methods
 
+<img width="328" alt="Screenshot 2025-03-04 at 1 48 37 PM" src="https://github.com/user-attachments/assets/5e6a44be-fe29-4017-b129-910e6931ea90" />
+
+
 Extracting disease–gene associations from DisGeNET: https://github.com/dhimmel/disgenet
 
 run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Gene Disease associations in DisGeNET
