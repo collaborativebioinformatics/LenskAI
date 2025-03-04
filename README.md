@@ -36,6 +36,10 @@ Interesting use cases:
 
 Extracting disease–gene associations from DisGeNET: https://github.com/dhimmel/disgenet
 
+run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Gene Disease associations in DisGeNET
+
+
+
 Protein-protein interaction databases: BioGRID, IntAct, Reactome, KEGG
 
 **PyTorch Geometric** GNN architectures to select from: https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html
