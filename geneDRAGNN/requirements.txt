@@ -1,0 +1,9 @@
+numpy
+pandas
+pecanpy
+pytorch_lightning
+scikit_learn
+torch
+torch_geometric
+tqdm
+wandb
