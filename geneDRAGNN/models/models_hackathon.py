@@ -161,7 +161,7 @@ class LitGNN(pl.LightningModule):
         return logits
 
     def on_validation_epoch_end(self):
-
+        print('')
         flattened_logits = torch.flatten(torch.cat(self.validation_step_outputs[2]))
         if self.logger:
             self.logger.experiment.log(

@@ -67,13 +67,43 @@ os.environ['WANDB_NOTEBOOK_NAME'] = notebook_name
 import gc
 from sklearn import metrics
 
-def updateModel(model):
-    layerTypes = [pygconv.GCNConv, pygconv.SAGEConv, pygconv.GATConv, pygconv.TransformerConv, pygconv.HGTConv]
+model_name = 'ClusterGCN'
 
+def updateModel(model):
+    #New layer types Then the original papers layer types
+    # 0, 1
+    layerTypes = [pygconv.GCNConv, pygconv.GATConv]
+    # 2, 3, 4, 5
+    layerTypes += [pygconv.SAGEConv, pygconv.TAGConv, pygconv.SGConv, pygconv.ClusterGCNConv]
+    # Dont have meta data - pygconv.HGTConv
+    # model too big for GPU - pygconv.TransformerConv, pygconv.GATv2Conv
+    # Super low scores - pygconv.ResGatedGraphConv
+    # different format
+    # need to test ClusterGCNConv
+    # and other core models
+    convertNumber = 0
+    import pdb; pdb.set_trace()
     if(model_name == 'GraphSAGE'):
-        model.convs[0] = layerTypes[3](105, 256)
-        model.convs[1] = layerTypes[3](256, 256)
-        model.convs[2] = layerTypes[3](256, 256)
+        model.convs[0] = layerTypes[convertNumber](105, 256)
+        model.convs[1] = layerTypes[convertNumber](256, 256)
+        model.convs[2] = layerTypes[convertNumber](256, 256)
+    elif(model_name == 'SGConv'):
+        model.convs[0] = layerTypes[convertNumber](105, 128)
+        model.convs[1] = layerTypes[convertNumber](128, 256)
+        model.convs[2] = layerTypes[convertNumber](256, 256)
+        model.convs[3] = layerTypes[convertNumber](256, 128)
+    elif(model_name == 'TAG'):
+        model.convs[0] = layerTypes[convertNumber](105, 128)
+        model.convs[1] = layerTypes[convertNumber](128, 256)
+        model.convs[2] = layerTypes[convertNumber](256, 128)
+    elif(model_name == 'ClusterGCN'):
+        model.convs[0] = layerTypes[convertNumber](105, 128)
+        model.convs[1] = layerTypes[convertNumber](128, 256)
+        model.convs[2] = layerTypes[convertNumber](256, 256)
+        model.convs[3] = layerTypes[convertNumber](256, 128)
+    else:
+        print('incorrect model')
+        sys.exit(0)        
     return model
 
 models.updater = updateModel
@@ -183,16 +213,6 @@ def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=
 
 # +
 ## TRAIN AND EVALUATE MODEL
-
-model_name = 'GraphSAGE'
-
-'''
-model_creator_dict = {'SGConv': models.create_SGConv_GNN,
-                      'GraphSAGE': models.create_GraphSAGE_GNN,
-                      'TAG': models.create_TAG_GNN,
-                      'ClusterGCN': models.create_clusterGCN_GNN,
-                      'MLP': models.create_MLP}
-'''
 
 create_model = model_creator_dict[model_name]
 

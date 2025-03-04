@@ -2,16 +2,40 @@
 
 "Lenski-esque AI competition trials with validated assertion databases"
 
-## Setup and install
-Everything should be in the geneGRAGNN folder.
+## Local
+    ## Setup and install
+    Everything should be in the geneGRAGNN folder.
 
-    pip install -r requirements.txt
+        pip install -r requirements.txt
 
-## Run
+    ## Run
 
+        cd models
+        CUDA_VISIBLE_DEVICES=0 python train_gnn_model_hackathon.py 
+
+## DNANexus
+
+    - Login to project
+    - Click Project name
+    - At top of screen click Tools->Jupyter lab
+    - + new Jupyter Lab
+        - Select project
+        - Instance Type mem3_ssd1_gpu_x64
+        - Duration 2 hours
+    - Wait for initializing to complete
+    - Go into the with "Open"
+    - Other -> terminal
+
+Then once you are there from terminal issue the following commands:
+
+    git clone https://github.com/collaborativebioinformatics/LenskAI.git
+    cd LenskAI/geneDRAGNN
+    dx download data.tar.gz
+    tar -xzvf data.tar.gz 
     cd models
-    CUDA_VISIBLE_DEVICES=0 python train_gnn_model.py 
-
+    ENVNAME=ENVgene && python -m venv $ENVNAME && source $ENVNAME/bin/activate
+    pip install numpy pandas tqdm torch pytorch_lightning torch_geometric wandb scikit-learn
+    python train_gnn_model_hackathon.py "testName"
 
 # Aim
 
