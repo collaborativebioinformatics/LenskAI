@@ -7,6 +7,8 @@ from torch_geometric.nn import GCNConv
 
 import geometric_models_hackathon
 
+updater = None
+
 # define GNN architecture
 class GNNModel(torch.nn.Module):
     def __init__(
@@ -92,7 +94,8 @@ class LitGNN(pl.LightningModule):
             self.model = GNNModel(**model_kwargs)
         else:
             self.model = model(**model_kwargs)
-
+        if updater:
+            self.model = updater(self.model)
         # define the loss function
         self.loss_module = torch.nn.CrossEntropyLoss()
 

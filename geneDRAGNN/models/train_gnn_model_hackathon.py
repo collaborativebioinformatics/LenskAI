@@ -71,10 +71,12 @@ def updateModel(model):
     layerTypes = [pygconv.GCNConv, pygconv.SAGEConv, pygconv.GATConv, pygconv.TransformerConv, pygconv.HGTConv]
 
     if(model_name == 'GraphSAGE'):
-        model.model.convs[0] = layerTypes[0](105, 256)
-        model.model.convs[1] = layerTypes[0](256, 256)
-        model.model.convs[2] = layerTypes[0](256, 256)
+        model.convs[0] = layerTypes[3](105, 256)
+        model.convs[1] = layerTypes[3](256, 256)
+        model.convs[2] = layerTypes[3](256, 256)
     return model
+
+models.updater = updateModel
 
 def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=500, log=False, log_project=None):
 
@@ -88,7 +90,6 @@ def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=
 
     # model info
     model = create_model()
-    model = updateModel(model)
     model_summary = pl.utilities.model_summary.summarize(model, max_depth=4)
     model_summary_str = str(model_summary)
     num_trainable_params = model_summary.trainable_parameters
@@ -110,12 +111,6 @@ def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=
         model = create_model()
         print('starting a model of format:')
         print(model)
-
-        model = updateModel(model)
-
-        print('changed to format:')
-        print(model)
-
 
         if log:
             n_zfills = int(np.ceil(np.log10(100)))
