@@ -19,7 +19,7 @@ def trainGNN(disease_Id, mode='binary'):
         model_name += '_binary'
         dataset, G = CreateDatasetv2_binary_diamond.get_dataset_from_graph(graph_path, disease_Id, quartile=False)
     else:
-        dataset, G = get_dataset_from_graph(graph_path, disease_Id, quartile=False, from_diamond=False)
+        dataset, G = get_dataset_from_graph(graph_path, disease_Id, quartile=False, from_diamond=True)
 
     lr              = 0.001
     epochs          = 40000
@@ -32,10 +32,10 @@ def trainGNN(disease_Id, mode='binary'):
 if __name__ == '__main__':
 
     # disease_Ids = ['C3714756','C0860207','C0011581','C0005586','C0001973']
-    disease_Ids = ['C0009402','C0023893']
-
+    # disease_Ids = ['C0009402','C0023893']
+    disease_Ids = ['C0009402']
     for disease_Id in disease_Ids:
         print('[+] Training', disease_Id)
         trainGNN(disease_Id, mode='binary')
-        trainGNN(disease_Id, mode='multiclass')
+        #trainGNN(disease_Id, mode='multiclass')
    

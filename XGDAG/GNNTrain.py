@@ -86,7 +86,6 @@ def train(model, data, epochs, lr, weight_decay, classes, model_name):
             'best val acc: {:.4f},'.format(best_val_acc),
             'best train loss: {:.4f} '.format(best_train_lss),
             '@ epoch', best_loss_epoch ,')')
-        break
     # Plot training accuracy curve
     plt.figure(figsize = (12,7))
     plt.plot(train_acc_curve)
