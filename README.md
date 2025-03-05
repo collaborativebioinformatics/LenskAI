@@ -58,7 +58,6 @@ This workflow can be applied to other biological datasets available on the Natio
 
 During the hackathon we focused on the original geneDRAGNN dataset on lung cancer data.  We tried to using an additional brain cancer dataset from DisGeNET (https://doi.org/10.1093/nar/gkw943), however, the computational requirements exceeded our resources (even on a cloud infrastructure). 
 
-
 # Contributors
 
 - Rorry Brenner
@@ -139,4 +138,6 @@ Looking forward, we plan to explore possible solutions to the challenge of imput
 13. Sun, B. B., Maranville, J. C., Peters, J. E., Stacey, D., Staley, J. R., Blackshaw, J., Burgess, S., Jiang, T., Paige, E., Surendran, P., Oliver-Williams, C., Kamat, M. A., Prins, B. P., Wilcox, S. K., Zimmerman, E. S., Chi, A., Bansal, N., Spain, S. L., Wood, A. M., … Butterworth, A. S. (2018). Genomic atlas of the human plasma proteome. Nature, 558(7708), 73–79.
 14. Szklarczyk, D., Gable, A. L., Nastou, K. C., Lyon, D., Kirsch, R., Pyysalo, S., Doncheva, N. T., Legeay, M., Fang, T., Bork, P., & others. (2021). The STRING database in 2021: customizable protein–protein networks, and functional characterization of user-uploaded gene/measurement sets. Nucleic Acids Research, 49(D1), D605–D612.
     
-
+# Contributors
+Rorry Brenner, Peng Qiu, Nanami Kubota, Anshika Gupta, Alicja Gluszko, and Jędrzej Kubica
+- 
