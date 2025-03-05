@@ -58,14 +58,8 @@ Additionally, the original geneDRAGNN paper focused on a single lung cancer data
 
 
 # Contributors
-
+Rorry Brenner, Peng Qiu, Nanami Kubota, Anshika Gupta, Alicja Gluszko, and Jędrzej Kubica
 - 
-
-# Introduction
-
-<img width="795" alt="Screenshot 2025-03-03 at 20 47 30" src="https://github.com/user-attachments/assets/19681a5d-355d-4b5f-8d18-508330dc073a" />
-
-<img width="367" alt="Screenshot 2025-03-03 at 20 47 37" src="https://github.com/user-attachments/assets/39e8d1d0-e607-4281-a560-f0ee473e3ab6" />
 
 # Methods and implementation
 
