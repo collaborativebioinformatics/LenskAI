@@ -77,6 +77,9 @@ run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Ge
 
 ![image](https://github.com/user-attachments/assets/9affc6e7-e356-4d2b-b81b-481b5163a952)
 
+<img width="683" alt="Screenshot 2025-03-05 at 3 15 43 PM" src="https://github.com/user-attachments/assets/6368d785-0c1a-419b-99a6-65158175e3db" />
+
+
 
 # Discussion
 
