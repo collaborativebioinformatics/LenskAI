@@ -69,41 +69,148 @@ from sklearn import metrics
 
 model_name = 'ClusterGCN'
 
+# concatenates outputs
+class LenskiLayer(torch.nn.Module):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        typeArray,
+        out_channels_list
+    ):
+        super().__init__()
+        if torch.tensor(out_channels_list).sum() != out_channels:
+            print('Youre trying to make a LenskiLayer with %d channels but your list is:' % out_channels)
+            print(out_channels_list)
+            sys.exit(0)
+        self.fullList = torch.nn.ModuleList()
+        for index in range(len(typeArray)):
+            self.fullList.append(typeArray[index](in_channels, out_channels_list[index]))
+    def forward(self, x, edgeIndex):
+        outs = []
+        for module in self.fullList:
+            outs.append(module(x, edgeIndex))
+        fullOut = torch.cat(outs, dim=1)
+        return fullOut
+
+# averages outputs
+class LenskiMeanLayer(torch.nn.Module):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        typeArray,
+        out_channels_list
+    ):
+        super().__init__()
+        if torch.tensor(out_channels_list).sum() != out_channels:
+            print('Youre trying to make a LenskiLayer with %d channels but your list is:' % out_channels)
+            print(out_channels_list)
+            sys.exit(0)
+        self.fullList = torch.nn.ModuleList()
+        for index in range(len(typeArray)):
+            self.fullList.append(typeArray[index](in_channels, out_channels))
+    def forward(self, x, edgeIndex):
+        outs = []
+        for module in self.fullList:
+            outs.append(module(x, edgeIndex))
+        fullOut = torch.stack(outs).mean(0)
+        return fullOut
+
+
+# Update Model with the layer types we found worked
+# We didnt use the following that looked promising at first
+# Dont have meta data - pygconv.HGTConv
+# model too big for GPU - pygconv.TransformerConv, pygconv.GATv2Conv
+# Super low scores - pygconv.ResGatedGraphConv
+
+
 def updateModel(model):
-    #New layer types Then the original papers layer types
+    #New layer types Then the original papers layer types, then Ours
     # 0, 1
     layerTypes = [pygconv.GCNConv, pygconv.GATConv]
     # 2, 3, 4, 5
     layerTypes += [pygconv.SAGEConv, pygconv.TAGConv, pygconv.SGConv, pygconv.ClusterGCNConv]
-    # Dont have meta data - pygconv.HGTConv
-    # model too big for GPU - pygconv.TransformerConv, pygconv.GATv2Conv
-    # Super low scores - pygconv.ResGatedGraphConv
-    # different format
-    # need to test ClusterGCNConv
-    # and other core models
-    convertNumber = 0
-    import pdb; pdb.set_trace()
-    if(model_name == 'GraphSAGE'):
-        model.convs[0] = layerTypes[convertNumber](105, 256)
-        model.convs[1] = layerTypes[convertNumber](256, 256)
-        model.convs[2] = layerTypes[convertNumber](256, 256)
-    elif(model_name == 'SGConv'):
-        model.convs[0] = layerTypes[convertNumber](105, 128)
-        model.convs[1] = layerTypes[convertNumber](128, 256)
-        model.convs[2] = layerTypes[convertNumber](256, 256)
-        model.convs[3] = layerTypes[convertNumber](256, 128)
-    elif(model_name == 'TAG'):
-        model.convs[0] = layerTypes[convertNumber](105, 128)
-        model.convs[1] = layerTypes[convertNumber](128, 256)
-        model.convs[2] = layerTypes[convertNumber](256, 128)
-    elif(model_name == 'ClusterGCN'):
-        model.convs[0] = layerTypes[convertNumber](105, 128)
-        model.convs[1] = layerTypes[convertNumber](128, 256)
-        model.convs[2] = layerTypes[convertNumber](256, 256)
-        model.convs[3] = layerTypes[convertNumber](256, 128)
+    # 6 7
+    layerTypes += [LenskiLayer, LenskiMeanLayer]
+    
+    convertNumber = 7
+
+   
+    '''
+    When Selecting 6 for Lenski Layer the following must be setup as well
+        typeArray - An array of the types you want your Linski layer(s) to be composed of
+        list256 - An array of the out channels of each Linski layer to replace the layers that used to have 256 out channels
+            This must add up to 256 total
+        list128 - An array of the out channels of each Linski layer to replace the layers that used to have 256 out channels
+            This must add up to 128 total
+    '''
+    
+    TESTID = 1
+    if(TESTID==1):
+        #with cluster base
+
+        typeArray = [layerTypes[3], layerTypes[4], layerTypes[5]]
+        list256 = [85, 85, 86]
+        list128 = [43, 43, 42]
+
+    if(TESTID==0):
+        #with cluster base
+        typeArray = [layerTypes[2], layerTypes[3], layerTypes[4], layerTypes[5]]
+        list256 = [64, 64, 64, 64]
+        list128 = [32, 32, 32, 32]
+    
+
+
+
+    # If doing Lenski Layer
+    if(convertNumber >= 6):
+        if(model_name == 'GraphSAGE'):
+            model.convs[0] = layerTypes[convertNumber](105, 256, typeArray, list256)
+            model.convs[1] = layerTypes[convertNumber](256, 256, typeArray, list256)
+            model.convs[2] = layerTypes[convertNumber](256, 256, typeArray, list256)
+        elif(model_name == 'SGConv'):
+            model.convs[0] = layerTypes[convertNumber](105, 128, typeArray, list128)
+            model.convs[1] = layerTypes[convertNumber](128, 256, typeArray, list256)
+            model.convs[2] = layerTypes[convertNumber](256, 256, typeArray, list256)
+            model.convs[3] = layerTypes[convertNumber](256, 128, typeArray, list128)
+        elif(model_name == 'TAG'):
+            model.convs[0] = layerTypes[convertNumber](105, 128, typeArray, list128)
+            model.convs[1] = layerTypes[convertNumber](128, 256, typeArray, list256)
+            model.convs[2] = layerTypes[convertNumber](256, 128, typeArray, list128)
+        elif(model_name == 'ClusterGCN'):
+            model.convs[0] = layerTypes[convertNumber](105, 128, typeArray, list128)
+            model.convs[1] = layerTypes[convertNumber](128, 256, typeArray, list256)
+            model.convs[2] = layerTypes[convertNumber](256, 256, typeArray, list256)
+            model.convs[3] = layerTypes[convertNumber](256, 128, typeArray, list128)
+        else:
+            print('incorrect model')
+            sys.exit(0)    
+
+    # If not using Lenski Layers
     else:
-        print('incorrect model')
-        sys.exit(0)        
+        if(model_name == 'GraphSAGE'):
+            model.convs[0] = layerTypes[convertNumber](105, 256)
+            model.convs[1] = layerTypes[convertNumber](256, 256)
+            model.convs[2] = layerTypes[convertNumber](256, 256)
+        elif(model_name == 'SGConv'):
+            model.convs[0] = layerTypes[convertNumber](105, 128)
+            model.convs[1] = layerTypes[convertNumber](128, 256)
+            model.convs[2] = layerTypes[convertNumber](256, 256)
+            model.convs[3] = layerTypes[convertNumber](256, 128)
+        elif(model_name == 'TAG'):
+            model.convs[0] = layerTypes[convertNumber](105, 128)
+            model.convs[1] = layerTypes[convertNumber](128, 256)
+            model.convs[2] = layerTypes[convertNumber](256, 128)
+        elif(model_name == 'ClusterGCN'):
+            model.convs[0] = layerTypes[convertNumber](105, 128)
+            model.convs[1] = layerTypes[convertNumber](128, 256)
+            model.convs[2] = layerTypes[convertNumber](256, 256)
+            model.convs[3] = layerTypes[convertNumber](256, 128)
+        else:
+            print('incorrect model')
+            sys.exit(0)    
+
     return model
 
 models.updater = updateModel
@@ -196,6 +303,7 @@ def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=
         if log:
             wandb.save('modeling_gnn.ipynb')
             wandb.finish(quiet=True)
+        print(model)
 
         del model, data_loader, trainer, data
         gc.collect()
@@ -206,7 +314,6 @@ def run_trials(create_model, model_name, start_trial=0, end_trial=100, n_epochs=
         print('\\nafter empty_cache:')
         print('memory allocated: ', torch.cuda.memory_allocated())
         print('memory reserved: ', torch.cuda.memory_reserved())
-
 
 
     return train_reports, test_reports, roc_data
@@ -226,3 +333,4 @@ train_reports, test_reports, roc_data = run_trials(lambda: create_model(model_na
 # save reports from trials to json
 model_utils.save_reports(f'project_reports/{log_project_name}_reports', train_reports, test_reports)
 np.save(f'project_reports/{log_project_name}_roc', roc_data)
+
