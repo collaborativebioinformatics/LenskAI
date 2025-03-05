@@ -48,7 +48,7 @@ The aim of the project is to examine a Lenski-Esque experiment of evolving a gra
 
 ![experiment3](Experiment3.png)
 
-Additionally the original paper focused on a single lung cancer dataset.  We will be using an additional brain cancer dataset from DisGenet to broaden the value of the experimental trials.  
+Additionally the original geneDRAGNN paper focused on a single lung cancer dataset.  We will be using an additional brain cancer dataset from DisGenet to broaden the value of the experimental trials. This workflow can be applied to other cancer datasets available on the National Cancer Institute's Genomic Data Commons. 
 
 
 # Contributors
