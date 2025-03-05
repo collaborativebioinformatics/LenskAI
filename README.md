@@ -83,11 +83,11 @@ Data: (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data/Readme.md)
 Preprocessing pipeline: (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data_preprocessing/README.md)
 
 In short, the following scripts were used for preprocessing the data:
-import_dgn.py - Imports the Disease Gene Network data and processes it to provide gene disease association scores and evidence index scores.
-import_gdc.py - Imports the National Institute of Health: Genomic Data Commons data for a specific disease and processes it to provide mutation features.
-import_hpa.py - Imports the Human Protein Atlas data and processes it to provide features based on genetic and RNA expression data. 
-import_string.py - Imports the STRING data for protein-protein interaction and processes it to provide the edge list and edge list features. 
-create_node2vec_embeddings.py - Applies an optimized node2vec to the target edgelist to create embeddings
+- **import_dgn.py** - Imports the Disease Gene Network data and processes it to provide gene disease association scores and evidence index scores.
+- **import_gdc.py** - Imports the National Institute of Health: Genomic Data Commons data for a specific disease and processes it to provide mutation features.
+- **import_hpa.py** - Imports the Human Protein Atlas data and processes it to provide features based on genetic and RNA expression data. 
+- **import_string.py** - Imports the STRING data for protein-protein interaction and processes it to provide the edge list and edge list features. 
+- **create_node2vec_embeddings.py** - Applies an optimized node2vec to the target edgelist to create embeddings
 
 
 
