@@ -2,7 +2,88 @@
 
 "Lenski-esque AI competition trials with validated assertion databases"
 
-## Local
+# Aim
+
+The aim of the project was to examine a Lenski-Esque experiment of evolving graph neural networks.  
+
+**Introduction:**
+
+Genomic medicine seeks to uncover molecular mechanisms responsible for human diseases. Large biological networks provide crucial information on complex relationships and interactions between biomolecules (e.g, genes or proteins) that underlie human diseases (https://doi.org/10.1038/nrg2918 ; https://doi.org/10.1093/bioadv/vbae099). Historically, and even today, experimental identification of genes involved in disease is expensive and time-consuming, often requiring extensive mouse and clinical studies. Conversely, network-based computational methods provide a way to model leverage biological networks to analyze genetype-phenotype associations. GeneDRAGGN [5] is a graph neural network for disease gene prioritization that leverages protein-protein interactions and disease-gene associations. In this study, we aimed at evolving the geneDRAGGN architecture in a Lenski-esque manner. Specifically, we started with the original architectures as the neural network “genotypes” and then “evolved” them by flipping individual components of one network to be components of the other networks. We selected those combinations that had the highest accuracy (on the test dataset provided by the authors) and let those architectures “survive” to the next iteration of training to then only continue “evolving”. We took the initial step of training a suite of networks of two types: 1) the architectures provided by the authors with replaced convolutional blocks; 2) an architecture where each layer was composed of a set of blocks of several types which were then averaged as the decision from that block.
+
+# Contributors
+
+- Rorry Brenner
+- Peng Qiu
+- Nanami Kubota
+- Anshika Gupta
+- Alicja Gluszko
+- Jędrzej Kubica
+
+# Methods and implementation
+
+## Workflow
+
+<img width="1066" alt="Screenshot 2025-03-05 at 1 12 12 PM" src="https://github.com/user-attachments/assets/dfb71ff2-cdba-49ec-8c96-fe2d501c1434" />
+
+
+Step 1: Preprocessing data 
+
+We used the data and preprocessing pipeline as outlined in the geneGRAGNN Github repository (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data/Readme.md)
+
+Preprocessing pipeline: (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data_preprocessing/README.md)
+
+In short, the following scripts were used for preprocessing the data:
+- **import_dgn.py** - Imports the Disease Gene Network data and processes it to provide gene disease association scores and evidence index scores.
+- **import_gdc.py** - Imports the National Institute of Health: Genomic Data Commons data for a specific disease and processes it to provide mutation features.
+- **import_hpa.py** - Imports the Human Protein Atlas data and processes it to provide features based on genetic and RNA expression data. 
+- **import_string.py** - Imports the STRING data for protein-protein interaction and processes it to provide the edge list and edge list features. 
+- **create_node2vec_embeddings.py** - Applies an optimized node2vec to the target edgelist to create embeddings
+
+
+Step 2: Generate final input data
+
+main_data_pipeline.ipynb
+Conducts the full data processing from start to finish by importing the features, edges and labels separately and providing the necessary operations to make the final datasets.
+
+We ran the following experiments for evolving our GNN models:
+
+![experiment1](Experiment1.png)
+
+![experiment2](Experiment2.png)
+
+![experiment3](Experiment3.png)
+
+This workflow can be applied to other biological datasets available on the National Cancer Institute's Genomic Data Commons. 
+
+During the hackathon we focused on the original geneDRAGNN dataset on lung cancer data.  We tried to using an additional brain cancer dataset from DisGeNET (https://doi.org/10.1093/nar/gkw943), however, the computational requirements exceeded our resources (even on a cloud infrastructure). 
+
+### Other useful data sources
+
+Protein-gene databases: Human Protein Atlas data, STRING, BioGRID, IntAct, Reactome
+
+Genomic-disease data: Genomic Data Commons data for brain cancer data to provide mutation features. 
+
+Disease–gene associations: DisGeNET
+
+Useful script for downloading the DisGeNET data: https://github.com/dhimmel/disgenet
+
+run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Gene Disease associations in DisGeNET
+
+
+**PyTorch Geometric** GNN architectures to select from: https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html
+
+# Results
+
+![image](https://github.com/user-attachments/assets/9affc6e7-e356-4d2b-b81b-481b5163a952)
+
+
+# Discussion
+
+Large biological networks such as protein-protein interaction networks or disease-gene association networks provide essential information about relationships and interactions between biomolecules. With the growing amount of such data, new bioinformatics approaches are needed. We conducted a project at the CMU / DNAnexus Hackathon 2025 to examine how we can leverage graph neural networks to extract biological insights from network-type of data. During the hackathon we aimed at training and "evolving" a graph neural network geneDRAGGN [5] for disease gene prioritization using public protein-protein interaction data (STING database) and disease-gene association data (DisGeNET database). Our results suggest that imputing such large biological networks into graph neural networks is challenging due to computational requirements of such algorithms. We leveraged a cloud infrastructe, however, due to the size of the public data, we were not able to actually train the network.
+
+Looking forward, we plan to explore possible solutions to the challenge of imputing large biological networks into graph neural networks. In addition, we emphasize the importance of developing algorithms for reducing the size of network files so that the computation is more memory-efficient, yet the biological information is not removed.
+
+## Installation and setup
     ## Setup and install
     Everything should be in the geneGRAGNN folder.
 
@@ -37,89 +118,7 @@ Then once you are there from terminal issue the following commands:
     pip install --upgrade pip
     pip install numpy pandas tqdm torch pytorch_lightning torch_geometric wandb scikit-learn
     python train_gnn_model_hackathon.py "testName"
-
-# Aim
-
-The aim of the project was to examine a Lenski-Esque experiment of evolving graph neural networks.  
-
-**Introduction:**
-
-Genomic medicine seeks to uncover molecular mechanisms responsible for human diseases. Large biological networks provide crucial information on complex relationships and interactions between biomolecules (e.g, genes or proteins) that underlie human diseases (https://doi.org/10.1038/nrg2918 ; https://doi.org/10.1093/bioadv/vbae099). Historically, and even today, experimental identification of genes involved in disease is expensive and time-consuming, often requiring extensive mouse and clinical studies. Conversely, network-based computational methods provide a way to model leverage biological networks to analyze genetype-phenotype associations. GeneDRAGGN [5] is a graph neural network for disease gene prioritization that leverages protein-protein interactions and disease-gene associations. In this study, we aimed at evolving the geneDRAGGN architecture in a Lenski-esque manner. Specifically, we started with the original architectures as the neural network “genotypes” and then “evolved” them by flipping individual components of one network to be components of the other networks. We selected those combinations that had the highest accuracy (on the test dataset provided by the authors) and let those architectures “survive” to the next iteration of training to then only continue “evolving”. We took the initial step of training a suite of networks of two types: 1) the architectures provided by the authors with replaced convolutional blocks; 2) an architecture where each layer was composed of a set of blocks of several types which were then averaged as the decision from that block.
-
-We ran the following experiments for evolving our GNN models:
-
-![experiment1](Experiment1.png)
-
-![experiment2](Experiment2.png)
-
-![experiment3](Experiment3.png)
-
-This workflow can be applied to other biological datasets available on the National Cancer Institute's Genomic Data Commons. 
-
-During the hackathon we focused on the original geneDRAGNN dataset on lung cancer data.  We tried to using an additional brain cancer dataset from DisGeNET (https://doi.org/10.1093/nar/gkw943), however, the computational requirements exceeded our resources (even on a cloud infrastructure). 
-
-# Contributors
-
-- Rorry Brenner
-- Peng Qiu
-- Nanami Kubota
-- Anshika Gupta
-- Alicja Gluszko
-- Jędrzej Kubica
-
-# Methods and implementation
-
-Step 1: Preprocessing data 
-
-We used the data and preprocessing pipeline as outlined in the geneGRAGNN Github repository (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data/Readme.md)
-
-Preprocessing pipeline: (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data_preprocessing/README.md)
-
-In short, the following scripts were used for preprocessing the data:
-- **import_dgn.py** - Imports the Disease Gene Network data and processes it to provide gene disease association scores and evidence index scores.
-- **import_gdc.py** - Imports the National Institute of Health: Genomic Data Commons data for a specific disease and processes it to provide mutation features.
-- **import_hpa.py** - Imports the Human Protein Atlas data and processes it to provide features based on genetic and RNA expression data. 
-- **import_string.py** - Imports the STRING data for protein-protein interaction and processes it to provide the edge list and edge list features. 
-- **create_node2vec_embeddings.py** - Applies an optimized node2vec to the target edgelist to create embeddings
-
-
-Step 2: Generate final input data
-
-main_data_pipeline.ipynb
-Conducts the full data processing from start to finish by importing the features, edges and labels separately and providing the necessary operations to make the final datasets.
-
-
-### Other useful data sources
-
-Protein-gene databases: Human Protein Atlas data, STRING, BioGRID, IntAct, Reactome
-
-Genomic-disease data: Genomic Data Commons data for brain cancer data to provide mutation features. 
-
-Disease–gene associations: DisGeNET
-
-Useful script for downloading the DisGeNET data: https://github.com/dhimmel/disgenet
-
-run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Gene Disease associations in DisGeNET
-
-
-**PyTorch Geometric** GNN architectures to select from: https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html
-
-## Workflow
-
-<img width="1066" alt="Screenshot 2025-03-05 at 1 12 12 PM" src="https://github.com/user-attachments/assets/dfb71ff2-cdba-49ec-8c96-fe2d501c1434" />
-
-
-# Results
-
-![image](https://github.com/user-attachments/assets/9affc6e7-e356-4d2b-b81b-481b5163a952)
-
-
-# Discussion
-
-Large biological networks such as protein-protein interaction networks or disease-gene association networks provide essential information about relationships and interactions between biomolecules. With the growing amount of such data, new bioinformatics approaches are needed. We conducted a project at the CMU / DNAnexus Hackathon 2025 to examine how we can leverage graph neural networks to extract biological insights from network-type of data. During the hackathon we aimed at training and "evolving" a graph neural network geneDRAGGN [5] for disease gene prioritization using public protein-protein interaction data (STING database) and disease-gene association data (DisGeNET database). Our results suggest that imputing such large biological networks into graph neural networks is challenging due to computational requirements of such algorithms. We leveraged a cloud infrastructe, however, due to the size of the public data, we were not able to actually train the network.
-
-Looking forward, we plan to explore possible solutions to the challenge of imputing large biological networks into graph neural networks. In addition, we emphasize the importance of developing algorithms for reducing the size of network files so that the computation is more memory-efficient, yet the biological information is not removed.
-
+    
 
 # References
 
@@ -137,7 +136,3 @@ Looking forward, we plan to explore possible solutions to the challenge of imput
 12. Suhre, K., Shin, S.-Y., Petersen, A.-K., Mohney, R. P., Meredith, D., W"agele, B., Altmaier, E., CARDIoGRAM, Deloukas, P., Erdmann, J., Grundberg, E., Hammond, C. J., de Angelis, M. Hr., Kastenm"uller, G., K"ottgen, A., Kronenberg, F., Mangino, M., Meisinger, C., Meitinger, T., … Gieger, C. (2011). Human metabolic individuality in biomedical and pharmaceutical research. Nature, 477(7362), 54–60.
 13. Sun, B. B., Maranville, J. C., Peters, J. E., Stacey, D., Staley, J. R., Blackshaw, J., Burgess, S., Jiang, T., Paige, E., Surendran, P., Oliver-Williams, C., Kamat, M. A., Prins, B. P., Wilcox, S. K., Zimmerman, E. S., Chi, A., Bansal, N., Spain, S. L., Wood, A. M., … Butterworth, A. S. (2018). Genomic atlas of the human plasma proteome. Nature, 558(7708), 73–79.
 14. Szklarczyk, D., Gable, A. L., Nastou, K. C., Lyon, D., Kirsch, R., Pyysalo, S., Doncheva, N. T., Legeay, M., Fang, T., Bork, P., & others. (2021). The STRING database in 2021: customizable protein–protein networks, and functional characterization of user-uploaded gene/measurement sets. Nucleic Acids Research, 49(D1), D605–D612.
-    
-# Contributors
-Rorry Brenner, Peng Qiu, Nanami Kubota, Anshika Gupta, Alicja Gluszko, and Jędrzej Kubica
-- 
