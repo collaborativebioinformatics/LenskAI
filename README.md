@@ -84,7 +84,9 @@ Large biological networks such as protein-protein interaction networks or diseas
 
 Looking forward, we plan to explore possible solutions to the challenge of imputing large biological networks into graph neural networks. In addition, we emphasize the importance of developing algorithms for reducing the size of network files so that the computation is more memory-efficient, yet the biological information is not removed.
 
-## Installation and setup
+## Special thanks to the Organizers of the CMU / DNAnexus Hackathon 2025!
+
+### Installation and setup
     ## Setup and install
     Everything should be in the geneGRAGNN folder.
 
@@ -95,7 +97,7 @@ Looking forward, we plan to explore possible solutions to the challenge of imput
         cd models
         CUDA_VISIBLE_DEVICES=0 python train_gnn_model_hackathon.py 
 
-## DNANexus
+### DNANexus
 
     - Login to project
     - Click Project name
