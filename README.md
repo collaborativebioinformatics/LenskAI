@@ -63,8 +63,6 @@ Rorry Brenner, Peng Qiu, Nanami Kubota, Anshika Gupta, Alicja Gluszko, and Jędr
 
 # Methods and implementation
 
-<img width="328" alt="Screenshot 2025-03-04 at 1 48 37 PM" src="https://github.com/user-attachments/assets/5e6a44be-fe29-4017-b129-910e6931ea90" />
-
 **Input Data files:** 
 
 Extracting disease–gene associations from DisGeNET: https://github.com/dhimmel/disgenet
