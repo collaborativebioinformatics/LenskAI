@@ -34,6 +34,7 @@ Then once you are there from terminal issue the following commands:
     tar -xzvf data.tar.gz 
     cd models
     ENVNAME=ENVgene && python -m venv $ENVNAME && source $ENVNAME/bin/activate
+    pip install --upgrade pip
     pip install numpy pandas tqdm torch pytorch_lightning torch_geometric wandb scikit-learn
     python train_gnn_model_hackathon.py "testName"
 
