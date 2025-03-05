@@ -42,14 +42,9 @@ Then once you are there from terminal issue the following commands:
 
 The aim of the project is to examine a Lenski-Esque experiment of evolving a graph neural network aritechture.  
 
-Introduction:
+**Introduction:**
 
 Genomic medicine seeks to uncover molecular mechanisms responsible for human diseases. Large biological networks provide crucial information on complex relationships and interactions between biomolecules (e.g, genes or proteins) that underlie human diseases (https://doi.org/10.1038/nrg2918 ; https://doi.org/10.1093/bioadv/vbae099). Historically, and even today, identification of genes involved in disease is expensive and time-consuming, often requiring extensive mouse and clinical studies. Network-based computational methods provide a way to model these complex relationships to identify new genetic associations. Based on the GNN models used in geneDRAGGN [5] to evaluate gene-disease associations from gene-gene interaction networks, In this study, we evolved the original graph neural networks. In a Lenski-esque manner. Specifically, we started with the original architectures as the neural network “genotypes” and then “evolved” them by flipping individual components of one network to be components of the other networks. A long-term goal would be to select the changes that had the highest benefit in terms of accuracy scores and let those networks “survive” to the next iteration of training to then only continue “evolving” the best networks. In this hackathon, we only took the initial step of training a suite of networks of two types. The first was original architectures but replaced the convolutional blocks with the blocks of the other networks. The second was building a network where rather than each layer having a single type of convolutional block, each network layer was composed of a set of blocks of each type which were then averaged as the decision from that block. 
-
-Input Data:
-We leveraged protein-protein interaction data along with gene ontology, tissue-specific gene expression, and mutation rate to enhance and annotate the network. To do so, we extracted data from the Human Protein Atlas, Genomic Data Commons, STRING, and DisGeNET databases to extract relevant features. 
-We used disease-association data from DisGeNET as positive-label data for our training set.
-
 
 We ran the following experiments for evolving our GNN models:
 
@@ -59,7 +54,7 @@ We ran the following experiments for evolving our GNN models:
 
 ![experiment3](Experiment3.png)
 
-Additionally the original geneDRAGNN paper focused on a single lung cancer dataset.  We will be using an additional brain cancer dataset from DisGenet to broaden the value of the experimental trials. This workflow can be applied to other cancer datasets available on the National Cancer Institute's Genomic Data Commons. 
+Additionally, the original geneDRAGNN paper focused on a single lung cancer dataset.  We will be using an additional brain cancer dataset from DisGenet to broaden the value of the experimental trials. This workflow can be applied to other cancer datasets available on the National Cancer Institute's Genomic Data Commons. 
 
 
 # Contributors
@@ -76,7 +71,7 @@ Additionally the original geneDRAGNN paper focused on a single lung cancer datas
 
 <img width="328" alt="Screenshot 2025-03-04 at 1 48 37 PM" src="https://github.com/user-attachments/assets/5e6a44be-fe29-4017-b129-910e6931ea90" />
 
-Data files: 
+**Input Data files:** 
 
 Extracting disease–gene associations from DisGeNET: https://github.com/dhimmel/disgenet
 
