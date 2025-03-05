@@ -2,14 +2,6 @@
 
 "Lenski-esque AI competition trials with validated assertion databases"
 
-# Aim
-
-The aim of the project was to examine a Lenski-Esque experiment of evolving graph neural networks.  
-
-**Introduction:**
-
-Genomic medicine seeks to uncover molecular mechanisms responsible for human diseases. Large biological networks provide crucial information on complex relationships and interactions between biomolecules (e.g, genes or proteins) that underlie human diseases (https://doi.org/10.1038/nrg2918 ; https://doi.org/10.1093/bioadv/vbae099). Historically, and even today, experimental identification of genes involved in disease is expensive and time-consuming, often requiring extensive mouse and clinical studies. Conversely, network-based computational methods provide a way to model leverage biological networks to analyze genetype-phenotype associations. GeneDRAGGN [5] is a graph neural network for disease gene prioritization that leverages protein-protein interactions and disease-gene associations. In this study, we aimed at evolving the geneDRAGGN architecture in a Lenski-esque manner. Specifically, we started with the original architectures as the neural network “genotypes” and then “evolved” them by flipping individual components of one network to be components of the other networks. We selected those combinations that had the highest accuracy (on the test dataset provided by the authors) and let those architectures “survive” to the next iteration of training to then only continue “evolving”. We took the initial step of training a suite of networks of two types: 1) the architectures provided by the authors with replaced convolutional blocks; 2) an architecture where each layer was composed of a set of blocks of several types which were then averaged as the decision from that block.
-
 # Contributors
 
 - Rorry Brenner
@@ -19,6 +11,14 @@ Genomic medicine seeks to uncover molecular mechanisms responsible for human dis
 - Alicja Gluszko
 - Jędrzej Kubica
 
+# Aim
+
+The aim of the project was to examine a Lenski-Esque experiment of evolving graph neural networks.  
+
+## Introduction
+
+Genomic medicine seeks to uncover molecular mechanisms responsible for human diseases. Large biological networks provide crucial information on complex relationships and interactions between biomolecules (e.g, genes or proteins) that underlie human diseases (https://doi.org/10.1038/nrg2918 ; https://doi.org/10.1093/bioadv/vbae099). Historically, and even today, experimental identification of genes involved in disease is expensive and time-consuming, often requiring extensive mouse and clinical studies. Conversely, network-based computational methods provide a way to model leverage biological networks to analyze genetype-phenotype associations. GeneDRAGGN [5] is a graph neural network for disease gene prioritization that leverages protein-protein interactions and disease-gene associations. In this study, we aimed at evolving the geneDRAGGN architecture in a Lenski-esque manner. Specifically, we started with the original architectures as the neural network “genotypes” and then “evolved” them by flipping individual components of one network to be components of the other networks. We selected those combinations that had the highest accuracy (on the test dataset provided by the authors) and let those architectures “survive” to the next iteration of training to then only continue “evolving”. We took the initial step of training a suite of networks of two types: 1) the architectures provided by the authors with replaced convolutional blocks; 2) an architecture where each layer was composed of a set of blocks of several types which were then averaged as the decision from that block.
+
 # Methods and implementation
 
 ## Workflow
@@ -26,7 +26,7 @@ Genomic medicine seeks to uncover molecular mechanisms responsible for human dis
 <img width="1066" alt="Screenshot 2025-03-05 at 1 12 12 PM" src="https://github.com/user-attachments/assets/dfb71ff2-cdba-49ec-8c96-fe2d501c1434" />
 
 
-Step 1: Preprocessing data 
+**Step 1: Preprocessing data** 
 
 We used the data and preprocessing pipeline as outlined in the geneGRAGNN Github repository (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data/Readme.md)
 
@@ -40,10 +40,11 @@ In short, the following scripts were used for preprocessing the data:
 - **create_node2vec_embeddings.py** - Applies an optimized node2vec to the target edgelist to create embeddings
 
 
-Step 2: Generate final input data
+**Step 2: Generate final input data**
 
 main_data_pipeline.ipynb
 Conducts the full data processing from start to finish by importing the features, edges and labels separately and providing the necessary operations to make the final datasets.
+
 
 We ran the following experiments for evolving our GNN models:
 
