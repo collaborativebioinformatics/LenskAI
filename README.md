@@ -109,7 +109,8 @@ Conducts the full data processing from start to finish by importing the features
 
 ## Workflow
 
-![workflow](https://github.com/user-attachments/assets/929e7817-d43d-4cf4-b5d3-271b6a573ed3)
+<img width="1066" alt="Screenshot 2025-03-05 at 1 12 12 PM" src="https://github.com/user-attachments/assets/dfb71ff2-cdba-49ec-8c96-fe2d501c1434" />
+
 
 # Results
 
