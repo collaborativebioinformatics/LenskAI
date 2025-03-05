@@ -40,11 +40,11 @@ Then once you are there from terminal issue the following commands:
 
 # Aim
 
-The aim of the project is to examine a Lenski-Esque experiment of evolving a graph neural network aritechture.  
+The aim of the project was to examine a Lenski-Esque experiment of evolving graph neural networks.  
 
 **Introduction:**
 
-Genomic medicine seeks to uncover molecular mechanisms responsible for human diseases. Large biological networks provide crucial information on complex relationships and interactions between biomolecules (e.g, genes or proteins) that underlie human diseases (https://doi.org/10.1038/nrg2918 ; https://doi.org/10.1093/bioadv/vbae099). Historically, and even today, identification of genes involved in disease is expensive and time-consuming, often requiring extensive mouse and clinical studies. Network-based computational methods provide a way to model these complex relationships to identify new genetic associations. Based on the GNN models used in geneDRAGGN [5] to evaluate gene-disease associations from gene-gene interaction networks, In this study, we evolved the original graph neural networks. In a Lenski-esque manner. Specifically, we started with the original architectures as the neural network “genotypes” and then “evolved” them by flipping individual components of one network to be components of the other networks. A long-term goal would be to select the changes that had the highest benefit in terms of accuracy scores and let those networks “survive” to the next iteration of training to then only continue “evolving” the best networks. In this hackathon, we only took the initial step of training a suite of networks of two types. The first was original architectures but replaced the convolutional blocks with the blocks of the other networks. The second was building a network where rather than each layer having a single type of convolutional block, each network layer was composed of a set of blocks of each type which were then averaged as the decision from that block. 
+Genomic medicine seeks to uncover molecular mechanisms responsible for human diseases. Large biological networks provide crucial information on complex relationships and interactions between biomolecules (e.g, genes or proteins) that underlie human diseases (https://doi.org/10.1038/nrg2918 ; https://doi.org/10.1093/bioadv/vbae099). Historically, and even today, experimental identification of genes involved in disease is expensive and time-consuming, often requiring extensive mouse and clinical studies. Conversely, network-based computational methods provide a way to model leverage biological networks to analyze genetype-phenotype associations. GeneDRAGGN [5] is a graph neural network for disease gene prioritization that leverages protein-protein interactions and disease-gene associations. In this study, we aimed at evolving the geneDRAGGN architecture in a Lenski-esque manner. Specifically, we started with the original architectures as the neural network “genotypes” and then “evolved” them by flipping individual components of one network to be components of the other networks. We selected those combinations that had the highest accuracy (on the test dataset provided by the authors) and let those architectures “survive” to the next iteration of training to then only continue “evolving”. We took the initial step of training a suite of networks of two types: 1) the architectures provided by the authors with replaced convolutional blocks; 2) an architecture where each layer was composed of a set of blocks of several types which were then averaged as the decision from that block.
 
 We ran the following experiments for evolving our GNN models:
 
@@ -54,32 +54,26 @@ We ran the following experiments for evolving our GNN models:
 
 ![experiment3](Experiment3.png)
 
-Additionally, the original geneDRAGNN paper focused on a single lung cancer dataset.  We will be using an additional brain cancer dataset from DisGenet to broaden the value of the experimental trials. This workflow can be applied to other cancer datasets available on the National Cancer Institute's Genomic Data Commons. 
+This workflow can be applied to other biological datasets available on the National Cancer Institute's Genomic Data Commons. 
+
+During the hackathon we focused on the original geneDRAGNN dataset on lung cancer data.  We tried to using an additional brain cancer dataset from DisGeNET (https://doi.org/10.1093/nar/gkw943), however, the computational requirements exceeded our resources (even on a cloud infrastructure). 
 
 
 # Contributors
-Rorry Brenner, Peng Qiu, Nanami Kubota, Anshika Gupta, Alicja Gluszko, and Jędrzej Kubica
-- 
+
+- Rorry Brenner
+- Peng Qiu
+- Nanami Kubota
+- Anshika Gupta
+- Alicja Gluszko
+- Jędrzej Kubica
 
 # Methods and implementation
 
-**Input Data files:** 
-
-Extracting disease–gene associations from DisGeNET: https://github.com/dhimmel/disgenet
-
-run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Gene Disease associations in DisGeNET
-
-Protein-gene databases: Human Protein Atlas data
-
-Protein-protein interaction databases: STRING data to get protein provide the edge list and edge list features.
-
-Genomic-disease data: Genomic Data Commons data for brain cancer data to provide mutation features. 
-
-
 Step 1: Preprocessing data 
 
-We used the data and preprocessing pipeline as outlined in geneGRAGNN:
-Data: (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data/Readme.md)
+We used the data and preprocessing pipeline as outlined in the geneGRAGNN Github repository (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data/Readme.md)
+
 Preprocessing pipeline: (https://github.com/geneDRAGNN/geneDRAGNN/blob/main/data_preprocessing/README.md)
 
 In short, the following scripts were used for preprocessing the data:
@@ -90,11 +84,23 @@ In short, the following scripts were used for preprocessing the data:
 - **create_node2vec_embeddings.py** - Applies an optimized node2vec to the target edgelist to create embeddings
 
 
-
 Step 2: Generate final input data
 
 main_data_pipeline.ipynb
 Conducts the full data processing from start to finish by importing the features, edges and labels separately and providing the necessary operations to make the final datasets.
+
+
+### Other useful data sources
+
+Protein-gene databases: Human Protein Atlas data, STRING, BioGRID, IntAct, Reactome
+
+Genomic-disease data: Genomic Data Commons data for brain cancer data to provide mutation features. 
+
+Disease–gene associations: DisGeNET
+
+Useful script for downloading the DisGeNET data: https://github.com/dhimmel/disgenet
+
+run `disgenet/disgenet.ipynb` to get all_gene_disease_associations.txt => All Gene Disease associations in DisGeNET
 
 
 **PyTorch Geometric** GNN architectures to select from: https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html
@@ -110,6 +116,11 @@ Conducts the full data processing from start to finish by importing the features
 
 
 # Discussion
+
+Large biological networks such as protein-protein interaction networks or disease-gene association networks provide essential information about relationships and interactions between biomolecules. With the growing amount of such data, new bioinformatics approaches are needed. We conducted a project at the CMU / DNAnexus Hackathon 2025 to examine how we can leverage graph neural networks to extract biological insights from network-type of data. During the hackathon we aimed at training and "evolving" a graph neural network geneDRAGGN [5] for disease gene prioritization using public protein-protein interaction data (STING database) and disease-gene association data (DisGeNET database). Our results suggest that imputing such large biological networks into graph neural networks is challenging due to computational requirements of such algorithms. We leveraged a cloud infrastructe, however, due to the size of the public data, we were not able to actually train the network.
+
+Looking forward, we plan to explore possible solutions to the challenge of imputing large biological networks into graph neural networks. In addition, we emphasize the importance of developing algorithms for reducing the size of network files so that the computation is more memory-efficient, yet the biological information is not removed.
+
 
 # References
 
